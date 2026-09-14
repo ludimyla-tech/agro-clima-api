@@ -2,29 +2,42 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "feature/previsao-tempo" ]
   pull_request:
     branches: [ "main" ]
 
 jobs:
-  build-and-test:
+  ci-test:
+    name: Continuous Integration (Testes)
     runs-on: ubuntu-latest
-
     steps:
-    - name: Baixar codigo
+    - name: Checkout do código
       uses: actions/checkout@v4
 
     - name: Configurar Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.11'
+        python-version: "3.10"
 
-    - name: Instalar dependencias
+    - name: Instalar dependências
       run: |
         python -m pip install --upgrade pip
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        pip install pytest
+        pip install pytest httpx requests
 
-    - name: Executar testes (CI)
+    - name: Executar testes automatizados
       run: |
         pytest
+
+  cd-deploy:
+    name: Continuous Deployment (Simulação)
+    needs: ci-test
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout do código
+      uses: actions/checkout@v4
+
+    - name: Simular Deploy / Entrega
+      run: |
+        echo "Executando Continuous Deployment..."
+        echo "Aplicação validada com sucesso e pronta para produção!"
