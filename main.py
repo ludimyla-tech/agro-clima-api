@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 import httpx
 
 app = FastAPI(title="Agro Clima API")

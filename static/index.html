@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Agro Clima API</title>
+<style>
+  body { font-family: Arial, sans-serif; max-width: 480px; margin: 40px auto; padding: 0 16px; }
+  h1 { color: #2d6a4f; }
+  input, button { padding: 8px; margin: 4px 0; width: 100%; box-sizing: border-box; }
+  button { background: #2d6a4f; color: white; border: none; cursor: pointer; }
+  #resultado { margin-top: 20px; padding: 16px; background: #f1f1f1; border-radius: 8px; white-space: pre-wrap; }
+</style>
+</head>
+<body>
+  <h1>🌾 Agro Clima API</h1>
+  <p>Consulte a previsão do tempo para a sua fazenda.</p>
+  <label>Latitude</label>
+  <input id="lat" type="number" step="any" value="-15.6">
+  <label>Longitude</label>
+  <input id="lon" type="number" step="any" value="-56.1">
+  <button onclick="buscarPrevisao()">Consultar previsão</button>
+  <div id="resultado"></div>
+
+<script>
+async function buscarPrevisao() {
+  const lat = document.getElementById('lat').value;
+  const lon = document.getElementById('lon').value;
+  const resultado = document.getElementById('resultado');
+  resultado.textContent = "Carregando...";
+  const resp = await fetch(`/previsao?lat=${lat}&lon=${lon}`);
+  const dados = await resp.json();
+  resultado.textContent = JSON.stringify(dados, null, 2);
+}
+</script>
+</body>
+</html>
